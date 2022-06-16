@@ -5,8 +5,8 @@ import (
 )
 
 func main() {
-	var slice = make([]int, 3, 10) //len=3,cap=5
-	fmt.Println(slice)             //[0,0,0]
+	var slice = make([]int, 3, 10)
+	fmt.Println(slice) //[0,0,0]
 
 	slice[0] = 1
 	fmt.Println(slice) //[1 0 0]
