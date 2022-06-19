@@ -4,22 +4,30 @@ import (
 	"fmt"
 )
 
-func calcSquares(number int, squareop chan int) {
-	sum := 0
+func digits(number int, dchnl chan int) {
 	for number != 0 {
 		digit := number % 10
-		sum += digit * digit
+		dchnl <- digit
 		number /= 10
+	}
+	close(dchnl)
+}
+func calcSquares(number int, squareop chan int) {
+	sum := 0
+	dch := make(chan int)
+	go digits(number, dch)
+	for digit := range dch {
+		sum += digit * digit
 	}
 	squareop <- sum
 }
 
 func calcCubes(number int, cubeop chan int) {
 	sum := 0
-	for number != 0 {
-		digit := number % 10
+	dch := make(chan int)
+	go digits(number, dch)
+	for digit := range dch {
 		sum += digit * digit * digit
-		number /= 10
 	}
 	cubeop <- sum
 }
